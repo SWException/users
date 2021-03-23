@@ -1,0 +1,41 @@
+{
+    "$id": "src/utils/schema.json",
+    "response": {
+        "type": "object",
+        "properties": {
+            "status": {
+                "type": "string",
+                "enum": [
+                    "success",
+                    "error"
+                ]
+            },
+            "data": {},
+            "message": {
+                "type": "string"
+            }
+        },
+        "additionalProperties": false
+    },
+    "fullApiResponse": {
+        "type": "object",
+        "properties": {
+            "statusCode": {
+                "type": "integer",
+                "enum": [
+                    200,
+                    400,
+                    401,
+                    402,
+                    403,
+                    404
+                ],
+                "minimum": 100
+            },
+            "body": {
+                "$ref": "#/response"
+            }
+        },
+        "additionalProperties": false
+    }
+}

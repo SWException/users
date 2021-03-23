@@ -1,0 +1,59 @@
+get:
+  summary: Ritorna cliente
+  description: Ritorna le informazioni di un utente
+  operationId: getCustomers
+  tags:
+    - customers
+  parameters:
+    - in: path
+      name: id
+      schema:
+        type: string
+      required: true
+    - in: header
+      name: Authorization
+      description: token JWT del venditore o del cliente interessato
+      schema:
+        type: string
+      required: true
+  responses:
+    200:
+      description: ritorna l'utente
+      content:
+        application/json:
+          #schema:
+            #$ref: "schema.json#/responseCustomer"
+          example:
+            {
+              status: "success",
+              data: 
+                {
+                  Username: "1da2506e-c804-44a6-ac61-f8b94b77b7ae",
+                  Attributes: [
+                    {
+                      Name: "sub",
+                      Value: "1da2506e-c804-44a6-ac61-f8b94b77b7ae"
+                    },
+                    {
+                      Name: "email_verified",
+                      Value: "true"
+                    },
+                    {
+                      Name: "email",
+                      Value: "ivanfurlan98@gmail.com"
+                    },
+                    {
+                      Name: "name",
+                      Value: "Ivan"
+                    },
+                    {
+                      Name: "family_name",
+                      Value: "Furlan"
+                    }
+                  ],
+                  UserCreateDate: "2021-03-17T01:31:44.959Z",
+                  UserLastModifiedDate: "2021-03-17T01:31:44.959Z",
+                  Enabled: true,
+                  UserStatus: "FORCE_CHANGE_PASSWORD"
+                }
+            }

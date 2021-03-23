@@ -1,0 +1,165 @@
+service: eml-be-users
+
+frameworkVersion: "2"
+# variablesResolutionMode: 20210219
+
+useDotenv: true
+
+plugins:
+  - serverless-webpack
+  - serverless-dynamodb-local
+  - serverless-offline-dotenv
+  - serverless-offline
+
+custom:
+  webpack:
+    webpackConfig: "./webpack.config.js"
+    includeModules:
+      forceExclude:
+        - aws-sdk
+    packager: "npm"
+  serverless-offline:
+    httpPort: 4000
+    ignoreJWTSignature: true
+
+
+provider:
+  name: aws
+  region: eu-central-1
+  # profile: swexception
+  runtime: nodejs12.x
+  lambdaHashingVersion: "20201221"
+  stage: ${opt:stage, 'dev'}
+
+  apiGateway:
+    restApiId: 95kq9eggu9
+    restApiRootResourceId: zsd84g8moe
+
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
+    DOMAIN_SUFFIX: eml-be
+    CALLBACK_URL: http://localhost:3000
+    AWS_USER_POOL_ID: !Ref CognitoUserPool
+    REGION: ${self:provider.region}
+
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:*
+            - s3:*
+          Resource: "*"
+
+functions:
+  customers:
+    handler: "src/customers/getCustomers.HANDLER"
+    events:
+      - http:
+          path: /customers
+          method: GET
+          cors: true
+  checkJWT:
+    handler: "src/jwt/checkJWT.HANDLER"
+    events:
+      - http:
+          path: /jwt/{token}
+          method: GET
+          cors: true
+
+resources:
+  Resources:
+    CognitoUserPool:
+      Type: AWS::Cognito::UserPool
+      Properties:
+        UserPoolName: EML-user-pool-${opt:stage, self:provider.stage}
+        UsernameAttributes:
+          - email
+        AutoVerifiedAttributes:
+          - email
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 8
+            RequireLowercase: false
+            RequireNumbers: false
+            RequireSymbols: false
+            RequireUppercase: false
+            # TemporaryPasswordValidityDays: 0
+        VerificationMessageTemplate:
+          DefaultEmailOption: CONFIRM_WITH_CODE # CONFIRM_WITH_CODE oppure CONFIRM_WITH_LINK
+          EmailSubject: "EmporioLambda - Codice di verifica"
+          EmailSubjectByLink: "EmporioLambda - Link di verifica"
+          EmailMessage: "Ecco il tuo codice di verifica: <b>{####}</b>"
+          EmailMessageByLink: "Clicca il seguente link per verificare l'email: {##CLICCA QUI##}"
+        AccountRecoverySetting:
+          RecoveryMechanisms:
+            - Name: verified_email
+              Priority: 1
+        DeviceConfiguration:
+          DeviceOnlyRememberedOnUserPrompt: false
+        Schema:
+          - Mutable: true
+            Required: true
+            Name: name
+          - Mutable: true
+            Required: true
+            Name: family_name
+          - Mutable: true
+            Required: true
+            Name: email
+          - Mutable: true
+            Required: false
+            Name: phone_number
+          - Mutable: true
+            Required: false
+            Name: picture
+          - Mutable: true
+            Required: false
+            Name: gender
+
+    CognitoUserPoolClient:
+      Type: AWS::Cognito::UserPoolClient
+      Properties:
+        ClientName: EML-user-pool-client-${opt:stage, self:provider.stage}
+        AllowedOAuthFlows:
+          - code
+          - implicit
+        AllowedOAuthFlowsUserPoolClient: true
+        AllowedOAuthScopes:
+          - phone
+          - email
+          - openid
+          - profile
+          - aws.cognito.signin.user.admin
+        UserPoolId:
+          Ref: CognitoUserPool
+        CallbackURLs:
+          - ${self:provider.environment.CALLBACK_URL}
+        DefaultRedirectURI: ${self:provider.environment.CALLBACK_URL}
+        ExplicitAuthFlows:
+          - ALLOW_CUSTOM_AUTH
+          - ALLOW_USER_SRP_AUTH
+          - ALLOW_REFRESH_TOKEN_AUTH
+        TokenValidityUnits:
+          AccessToken: hours
+          IdToken: hours
+          RefreshToken: days
+        AccessTokenValidity: 1 # default: 1 ora
+        IdTokenValidity: 1 # default: 1 ora
+        RefreshTokenValidity: 30 # default: 30 giorni
+
+    CognitoGroupClient:
+      Type: AWS::Cognito::UserPoolGroup
+      Properties:
+        Description: Client
+        GroupName: Client
+        UserPoolId:
+          Ref: CognitoUserPool
+
+    CognitoGroupAdmin:
+      Type: AWS::Cognito::UserPoolGroup
+      Properties:
+        Description: Venditori
+        GroupName: Admin
+        UserPoolId:
+          Ref: CognitoUserPool

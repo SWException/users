@@ -21,7 +21,7 @@ export default class User {
                 .then(res => res.json())
                 .then(json => jsonWebKeys = json.keys);
 
-            return User?.validateToken(token, jsonWebKeys);
+            return User.validateToken(token, jsonWebKeys);
         }
         catch (err) {
             console.log(err);
@@ -35,11 +35,11 @@ export default class User {
     }
 
     public isClient (): boolean {
-        return this.getGroups().includes("Client");
+        return this.getGroups()?.includes("Client");
     }
 
     public isAdmin (): boolean {
-        return this.getGroups().includes("Admin");
+        return this.getGroups()?.includes("Admin");
     }
 
     public getUsername (): string {

@@ -16,8 +16,8 @@ get:
       description: ritornata la lista
       content:
         application/json:
-          # schema:
-          #   $ref: "schema.json#/responseCustomers"
+          schema:
+            $ref: "../schemas/customers.json#/responseCustomers"
           example:
             {
               status: "success",
@@ -54,9 +54,9 @@ get:
               ]
             }
 # post:
-#   summary: Signup new customers
+#   summary: SignUp new customers
 #   description: Registra un nuovo cliente alla piattaforma, poi sarà da confermare la registrazione con la verifica dell'email
-#   operationId: signup
+#   operationId: signUp
 #   tags:
 #     - customers
 #   responses:

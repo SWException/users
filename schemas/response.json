@@ -1,5 +1,5 @@
 {
-    "$id": "src/utils/schema.json",
+    "$id": "schemas/response.json",
     "response": {
         "type": "object",
         "properties": {

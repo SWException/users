@@ -6,7 +6,7 @@ import {SCHEMAS, setFormats} from 'src/utils/configAjv';
 expect.extend(matchersWithOptions(SCHEMAS, (ajv) => setFormats(ajv)));
 
 const SCHEMA: JSONSchema7 = {
-    $ref: "src/utils/schema.json#/fullApiResponse"
+    $ref: "schemas/response.json#/fullApiResponse"
 };
 
 test('response schema', () => {

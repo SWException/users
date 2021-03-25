@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: EmporioLambda BE
-  description: Queste sono le OpenAPI per il microservizio designato alla gestione degli utenti in Emporio Lambda
+  description: Queste sono le OpenAPI per il micro servizio designato alla gestione degli utenti in Emporio Lambda
   version: 0.1.0
 
 servers:

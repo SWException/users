@@ -16,23 +16,27 @@ get:
   responses:
     200:
       description: token valido
-      schema:
-        $ref: "/schemas/checkJWT.json"
-      example:
-        {
-          data:
-          {
-            username: "1234",
-            type: "customer" # oppure vendor
-          },
-          status: "success"
-        }
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/checkJWT.json#/responseUser"
+          example:
+            {
+              status: "success",
+              data:
+              {
+                username: "1234",
+                type: "customer" # oppure vendor
+              }
+            }
     400:
       description: token non valido
-      schema:
-        $ref:
-      example:
-        {
-          status: "error",
-          message: "invalid token"
-        }
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/response.json#/response"
+          example:
+            {
+              status: "error",
+              message: "invalid token"
+            }

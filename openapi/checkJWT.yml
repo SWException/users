@@ -1,0 +1,38 @@
+get:
+  summary: controllo token jwt
+  description: ritorna stato validità JWT, iff valido JWT e tipologia venditore
+  operationId: checkJWT
+  tags:
+    - users
+
+  parameters:
+    - in: path
+      name: Authorization
+      description: token JWT
+      schema:
+        type: string
+      required: true
+  
+  responses:
+    200:
+      description: token valido
+      schema:
+        $ref: "/schemas/checkJWT.json"
+      example:
+        {
+          data:
+          {
+            username: "1234",
+            type: "customer" # oppure vendor
+          },
+          status: "success"
+        }
+    400:
+      description: token non valido
+      schema:
+        $ref:
+      example:
+        {
+          status: "error",
+          message: "invalid token"
+        }

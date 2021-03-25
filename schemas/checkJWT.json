@@ -1,0 +1,27 @@
+{
+    "$id": "schemas/checkJWT.json",
+    "user":{
+        "type": "object",
+        "properties": {
+            "username": { "type": "string" },
+            "type": { 
+                "type": "string",
+                "enum": [
+                    "vendor",
+                    "customer"
+                ] 
+            }
+        }
+    },
+    "responseUser": {
+        "allOf" : [
+            { "$ref": "response.json" },
+            {
+                "properties": {
+                    "data": { "$ref": "#/user" }
+                }
+            }
+        ]
+
+    }
+}

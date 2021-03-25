@@ -56,14 +56,21 @@ functions:
     handler: "src/customers/getCustomers.HANDLER"
     events:
       - http:
-          path: /customers
+          path: /users/customers
+          method: GET
+          cors: true
+  customer:
+    handler: "src/customers/getCustomer.HANDLER"
+    events:
+      - http:
+          path: /users/customers/{username}
           method: GET
           cors: true
   checkJWT:
-    handler: "src/jwt/checkJWT.HANDLER"
+    handler: "src/check/checkJWT.HANDLER"
     events:
       - http:
-          path: /jwt/{token}
+          path: /users/check/{token}
           method: GET
           cors: true
 

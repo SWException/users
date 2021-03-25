@@ -6,7 +6,7 @@ get:
     - customers
   parameters:
     - in: path
-      name: id
+      name: username
       schema:
         type: string
       required: true
@@ -21,8 +21,8 @@ get:
       description: ritorna l'utente
       content:
         application/json:
-          #schema:
-            #$ref: "schema.json#/responseCustomer"
+          schema:
+            $ref: "../schemas/customers.json#/responseCustomer"
           example:
             {
               status: "success",

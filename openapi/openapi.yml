@@ -16,6 +16,8 @@ paths:
     $ref: "checkJWT.yml"
   /customers/: # ritorna lista dei clienti per il venditore (get),
     $ref: "customers.yml"
+  /customers/{username}: # ritorna lista dei clienti per il venditore (get),
+    $ref: "customersByID.yml"
   # /customers/{username}: # ritorna dettagli di un utente
   #   $ref: "customersByID.yml"
   # /login:

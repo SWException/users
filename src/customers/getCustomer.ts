@@ -23,7 +23,7 @@ export const HANDLER: APIGatewayProxyHandler = async (event) => {
     
     const PARAMS = {
         UserPoolId: process.env.AWS_USER_POOL_ID,
-        Username: event.pathParameters?.id
+        Username: event.pathParameters?.username
     };
   
     const RES = await 

@@ -7,7 +7,7 @@ get:
 
   parameters:
     - in: path
-      name: Authorization
+      name: token
       description: token JWT
       schema:
         type: string

@@ -1,9 +1,9 @@
 get:
   summary: Ritorna cliente
   description: Ritorna le informazioni di un utente
-  operationId: getCustomers
+  operationId: getCustomer
   tags:
-    - customers
+    - users
   parameters:
     - in: path
       name: username

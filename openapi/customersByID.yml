@@ -1,6 +1,6 @@
 get:
-  summary: Ritorna cliente
-  description: Ritorna le informazioni di un utente
+  summary: "Get customer info"
+  description: "Return info about the user associated with the token"
   operationId: getCustomer
   tags:
     - users
@@ -18,7 +18,7 @@ get:
       required: true
   responses:
     200:
-      description: ritorna l'utente
+      description: "user found"
       content:
         application/json:
           schema:
@@ -57,3 +57,15 @@ get:
                   UserStatus: "FORCE_CHANGE_PASSWORD"
                 }
             }
+    400:
+      description: "request error"
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/response.json#/response"
+          example:
+            {
+              status: "error",
+              message: "user not found"
+            }
+

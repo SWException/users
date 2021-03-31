@@ -1,6 +1,6 @@
 get:
-  summary: controllo token jwt
-  description: ritorna stato validità JWT, iff valido JWT e tipologia venditore
+  summary: check JWT token
+  description: return the validity status of the JWT and its type (customer/vendor)
   operationId: checkJWT
   tags:
     - users
@@ -15,7 +15,7 @@ get:
   
   responses:
     200:
-      description: token valido
+      description: valid token
       content:
         application/json:
           schema:
@@ -30,7 +30,7 @@ get:
               }
             }
     400:
-      description: token non valido
+      description: not valid token
       content:
         application/json:
           schema:

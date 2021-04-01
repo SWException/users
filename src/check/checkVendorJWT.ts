@@ -11,15 +11,11 @@ export const HANDLER: APIGatewayProxyHandler = async (event) => {
     console.log(USER);
 
     if(USER && USER.isAuthenticate()){
-        let type = "undefined";
-        if (USER.isClient()){
-            type = "client";
-        }
         if(USER.isAdmin()){
-            type = "vendor";
+            return API_RESPONSES._200({username: USER.getUsername(), type: "vendor"})
         }
-        return API_RESPONSES._200({username: USER.getUsername(), type: type})
     }
-        
-    return API_RESPONSES._400(null, "error", "Not valid token");
+    
+    return API_RESPONSES._400(null, "error", "Not valid token or not a vendor");
+    
 }

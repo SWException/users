@@ -73,6 +73,20 @@ functions:
           path: /users/check/{token}
           method: GET
           cors: true
+  checkCustomerJWT:
+    handler: "src/check/checkCustomerJWT.HANDLER"
+    events:
+      - http:
+          path: /users/customers/check/{token}
+          method: GET
+          cors: true
+  checkVendorJWT:
+    handler: "src/check/checkVendorJWT.HANDLER"
+    events:
+      - http:
+          path: /users/vendors/check/{token}
+          method: GET
+          cors: true
 
 resources:
   Resources:

@@ -10,7 +10,8 @@
                     "vendor",
                     "customer"
                 ] 
-            }
+            },
+            "required": ["username"]
         }
     },
     "responseUser": {

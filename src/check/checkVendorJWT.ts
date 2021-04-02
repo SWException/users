@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
 import User from "src/User";
-import API_RESPONSES from "src/utils/apiResponses";
+import response from "src/utils/apiResponses";
 
 export const HANDLER: APIGatewayProxyHandler = async (event) => {
     console.log(event);
@@ -12,10 +12,10 @@ export const HANDLER: APIGatewayProxyHandler = async (event) => {
 
     if(USER && USER.isAuthenticate()){
         if(USER.isAdmin()){
-            return API_RESPONSES._200({username: USER.getUsername(), type: "vendor"})
+            return response(200, null, {username: USER.getUsername()})
         }
     }
     
-    return API_RESPONSES._400(null, "error", "Not valid token or not a vendor");
+    return response(401, "Not valid token or not a vendor");
     
 }

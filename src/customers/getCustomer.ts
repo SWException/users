@@ -1,8 +1,8 @@
 import { APIGatewayProxyHandler } from "aws-lambda";
-import API_RESPONSES from "src/utils/apiResponses";
 import * as AWS from "aws-sdk"
 import { getTokenFromEvent } from "src/utils/checkJWT";
 import User from "src/User";
+import response from "src/utils/apiResponses";
 
 const COGNITO_IDENTITY_SERVICE_PROVIDER = 
     new AWS.CognitoIdentityServiceProvider();
@@ -11,13 +11,12 @@ export const HANDLER: APIGatewayProxyHandler = async (event) => {
     
     const TOKEN = getTokenFromEvent(event);
     if (TOKEN == null) {
-        return API_RESPONSES._400(null, "error", "manca TOKEN");
+        return response(400, "manca TOKEN");
     }
     else {
         const USER: User = await User.createUser(TOKEN);
         if (!(USER && USER.isAuthenticate() && (USER.isAdmin() || (USER.isClient() && USER.getUsername() == event.pathParameters?.id)))) {
-            return API_RESPONSES._400(null,
-                "error", "TOKEN non valido o scaduto");
+            return response(401, "TOKEN non valido o scaduto");
         }
     }
     
@@ -29,5 +28,5 @@ export const HANDLER: APIGatewayProxyHandler = async (event) => {
     const RES = await 
     COGNITO_IDENTITY_SERVICE_PROVIDER.adminGetUser(PARAMS).promise();
     
-    return API_RESPONSES._200(RES);
+    return response(200, null, RES);
 }

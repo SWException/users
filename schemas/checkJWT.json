@@ -10,9 +10,9 @@
                     "vendor",
                     "customer"
                 ] 
-            },
-            "required": ["username"]
-        }
+            }
+        },
+        "required": ["username"]
     },
     "responseUser": {
         "allOf" : [

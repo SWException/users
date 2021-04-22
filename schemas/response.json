@@ -32,6 +32,8 @@
                 ],
                 "minimum": 100
             },
+            "headers":{
+            },
             "body": {
                 "$ref": "#/response"
             }

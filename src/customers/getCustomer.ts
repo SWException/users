@@ -25,8 +25,19 @@ export const HANDLER: APIGatewayProxyHandler = async (event) => {
         Username: event.pathParameters?.username
     };
   
-    const RES = await 
+    const user = await 
     COGNITO_IDENTITY_SERVICE_PROVIDER.adminGetUser(PARAMS).promise();
-    
-    return response(200, null, RES);
+
+    return response(200, null, {
+        username: user.Username,
+        userStatus: user.UserStatus,
+        name: user.UserAttributes["name"],
+        surname: user.UserAttributes["family_name"],
+        email: user.UserAttributes["email"],
+        emailVerified: user.UserAttributes["email_verified"],
+        createDate: user.UserCreateDate,
+        lastModifiedDate: user.UserLastModifiedDate,
+        MFAOptions: user.MFAOptions,
+        enabled: user.Enabled
+    });
 }

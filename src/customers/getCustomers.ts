@@ -25,10 +25,25 @@ export const HANDLER: APIGatewayProxyHandler = async (event) => {
         GroupName: "Client"
     };
   
-    const RES = await 
+    const RES_TEMP = await 
     COGNITO_IDENTITY_SERVICE_PROVIDER.listUsersInGroup(PARAMS).promise();
     
-    return response(200, null, RES.Users);
-    
+    const RES = [];
+    RES_TEMP.Users.forEach((user)=>{
+        RES.push({
+            username: user.Username,
+            userStatus: user.UserStatus,
+            name: user.Attributes["name"],
+            surname: user.Attributes["family_name"],
+            email: user.Attributes["email"],
+            emailVerified: user.Attributes["email_verified"],
+            createDate: user.UserCreateDate,
+            lastModifiedDate: user.UserLastModifiedDate,
+            MFAOptions: user.MFAOptions,
+            enabled: user.Enabled
+            
+        })
+    })
 
+    return response(200, null, RES);
 }

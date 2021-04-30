@@ -41,6 +41,8 @@ provider:
     CALLBACK_URL: http://localhost:3000
     AWS_USER_POOL_ID: !Ref CognitoUserPool
     REGION: ${self:provider.region}
+    AWS_COGNITO_ACCESS_KEY_ID: ${env:AWS_COGNITO_ACCESS_KEY_ID}
+    AWS_COGNITO_SECRET_ACCESS_KEY: ${env:AWS_COGNITO_SECRET_ACCESS_KEY}
 
   iam:
     role:

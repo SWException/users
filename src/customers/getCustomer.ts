@@ -24,17 +24,22 @@ export const HANDLER: APIGatewayProxyHandler = async (event) => {
         UserPoolId: process.env.AWS_USER_POOL_ID,
         Username: event.pathParameters?.username
     };
+
+    AWS.config.update({ region: process.env.AWS_REGION, 'accessKeyId': 'AKIASSX44DGDU4Y3W7LN', 'secretAccessKey': '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' });
   
     const user = await 
     COGNITO_IDENTITY_SERVICE_PROVIDER.adminGetUser(PARAMS).promise();
 
+    const ATTRIBUTES = [];
+    user.UserAttributes.forEach((att) => ATTRIBUTES[att.Name] = att.Value);
+
     return response(200, null, {
         username: user.Username,
         userStatus: user.UserStatus,
-        name: user.UserAttributes["name"],
-        surname: user.UserAttributes["family_name"],
-        email: user.UserAttributes["email"],
-        emailVerified: user.UserAttributes["email_verified"],
+        name: ATTRIBUTES["name"],
+        surname: ATTRIBUTES["family_name"],
+        email: ATTRIBUTES["email"],
+        emailVerified: ATTRIBUTES["email_verified"],
         createDate: user.UserCreateDate,
         lastModifiedDate: user.UserLastModifiedDate,
         MFAOptions: user.MFAOptions,

@@ -21,7 +21,9 @@ export default function response (
         "statusCode": statusCode,
         "headers": {
             'Access-Control-Allow-Origin': '*', 
-            'Access-Control-Allow-Credentials': true
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Allow-Headers': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, DELETE'
         },
         "body": JSON.stringify(BODY, null, 2)
     }

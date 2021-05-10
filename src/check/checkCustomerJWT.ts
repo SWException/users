@@ -11,7 +11,7 @@ export const HANDLER: APIGatewayProxyHandler = async (event) => {
     console.log(USER);
 
     if(USER && USER.isAuthenticate()){
-        if(USER.isClient()){
+        if(await USER.isClient()){
             return response(200, null, {username: USER.getUsername()})
         }
     }

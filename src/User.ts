@@ -1,6 +1,7 @@
 import jsonwebtoken from 'jsonwebtoken';
 import jwkToPem from 'jwk-to-pem';
 import fetch from 'node-fetch';
+import * as AWS from "aws-sdk"
 
 export default class User {
 
@@ -34,8 +35,35 @@ export default class User {
         return (this.getExp() > Date.now() / 1000);
     }
 
-    public isClient (): boolean {
-        return this.getGroups()?.includes("Client");
+    public async isClient (): Promise<boolean> {
+        if(this.getGroups()?.includes("Client")){
+            return true;
+        }
+        else if(!this.isAdmin()) {
+            const COGNITO_IDENTITY_SERVICE_PROVIDER = 
+                new AWS.CognitoIdentityServiceProvider();
+
+            AWS.config.update({ 
+                region: process.env.AWS_REGION, 
+                'accessKeyId': process.env.AWS_COGNITO_ACCESS_KEY_ID, 
+                'secretAccessKey': process.env.AWS_COGNITO_SECRET_ACCESS_KEY 
+            });
+            
+            const PARAMS = {
+                UserPoolId: process.env.AWS_USER_POOL_ID,
+                Username: this.getUsername(),
+                GroupName: "Client",
+            };
+
+            return await COGNITO_IDENTITY_SERVICE_PROVIDER.adminAddUserToGroup(PARAMS).promise()
+                .then(()=>true)
+                .catch((e)=>{
+                    console.log(e);
+                    return true;
+                });
+        }
+        else
+            return false;
     }
 
     public isAdmin (): boolean {

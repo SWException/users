@@ -12,11 +12,11 @@ export const HANDLER: APIGatewayProxyHandler = async (event) => {
 
     if(USER && USER.isAuthenticate()){
         let type = "undefined";
-        if (USER.isClient()){
-            type = "client";
+        if (await USER.isClient()){
+            type = "Client";
         }
         if(USER.isAdmin()){
-            type = "vendor";
+            type = "Vendor";
         }
         return response(200, null, {username: USER.getUsername(), type: type})
     }

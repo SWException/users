@@ -24,25 +24,29 @@ export const HANDLER: APIGatewayProxyHandler = async (event) => {
         UserPoolId: process.env.AWS_USER_POOL_ID,
         Username: event.pathParameters?.username
     };
-
-    AWS.config.update({ region: process.env.AWS_REGION, 'accessKeyId': process.env.AWS_COGNITO_ACCESS_KEY_ID, 'secretAccessKey': process.env.AWS_COGNITO_SECRET_ACCESS_KEY });
+    try{
+        // AWS.config.update({ region: process.env.AWS_REGION, 'accessKeyId': process.env.AWS_COGNITO_ACCESS_KEY_ID, 'secretAccessKey': process.env.AWS_COGNITO_SECRET_ACCESS_KEY });
   
-    const USER = await 
-    COGNITO_IDENTITY_SERVICE_PROVIDER.adminGetUser(PARAMS).promise();
+        const USER = await 
+        COGNITO_IDENTITY_SERVICE_PROVIDER.adminGetUser(PARAMS).promise();
 
-    const ATTRIBUTES = [];
-    USER.UserAttributes.forEach((att) => ATTRIBUTES[att.Name] = att.Value);
+        const ATTRIBUTES = [];
+        USER.UserAttributes.forEach((att) => ATTRIBUTES[att.Name] = att.Value);
 
-    return response(200, null, {
-        username: USER.Username,
-        userStatus: USER.UserStatus,
-        name: ATTRIBUTES["name"],
-        surname: ATTRIBUTES["family_name"],
-        email: ATTRIBUTES["email"],
-        emailVerified: ATTRIBUTES["email_verified"],
-        createDate: USER.UserCreateDate,
-        lastModifiedDate: USER.UserLastModifiedDate,
-        MFAOptions: USER.MFAOptions,
-        enabled: USER.Enabled
-    });
+        return response(200, null, {
+            username: USER.Username,
+            userStatus: USER.UserStatus,
+            name: ATTRIBUTES["name"],
+            surname: ATTRIBUTES["family_name"],
+            email: ATTRIBUTES["email"],
+            emailVerified: ATTRIBUTES["email_verified"],
+            createDate: USER.UserCreateDate,
+            lastModifiedDate: USER.UserLastModifiedDate,
+            MFAOptions: USER.MFAOptions,
+            enabled: USER.Enabled
+        });
+    }
+    catch (err: any) {
+        return response(400, err?.message, err);
+    }
 }

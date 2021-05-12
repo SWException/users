@@ -22,7 +22,7 @@ export const HANDLER: APIGatewayProxyHandler = async (event) => {
 
     const SEARCH = event.queryStringParameters?.search;
 
-    AWS.config.update({ region: process.env.AWS_REGION, 'accessKeyId': process.env.AWS_COGNITO_ACCESS_KEY_ID, 'secretAccessKey': process.env.AWS_COGNITO_SECRET_ACCESS_KEY });
+    // AWS.config.update({ region: process.env.AWS_REGION, 'accessKeyId': process.env.AWS_COGNITO_ACCESS_KEY_ID, 'secretAccessKey': process.env.AWS_COGNITO_SECRET_ACCESS_KEY });
 
     const COGNITO_IDENTITY_SERVICE_PROVIDER =
         new AWS.CognitoIdentityServiceProvider();
@@ -34,7 +34,7 @@ export const HANDLER: APIGatewayProxyHandler = async (event) => {
         };
 
         const RES_TEMP = await
-            COGNITO_IDENTITY_SERVICE_PROVIDER.listUsersInGroup(PARAMS).promise();
+        COGNITO_IDENTITY_SERVICE_PROVIDER.listUsersInGroup(PARAMS).promise();
         console.log(RES_TEMP.Users);
 
         const RES = [];
@@ -66,7 +66,8 @@ export const HANDLER: APIGatewayProxyHandler = async (event) => {
         })
 
         return response(200, null, RES);
-    } catch (err: any) {
+    }
+    catch (err: any) {
         return response(200, err?.message, err);
     }
 }

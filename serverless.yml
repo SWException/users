@@ -51,6 +51,7 @@ provider:
           Action:
             - dynamodb:*
             - s3:*
+            - cognito-idp:*
           Resource: "*"
 
 functions:

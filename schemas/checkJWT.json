@@ -11,11 +11,12 @@
                     "customer"
                 ] 
             }
-        }
+        },
+        "required": ["username"]
     },
     "responseUser": {
         "allOf" : [
-            { "$ref": "response.json" },
+            { "$ref": "response.json#/response" },
             {
                 "properties": {
                     "data": { "$ref": "#/user" }

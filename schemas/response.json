@@ -1,5 +1,5 @@
 {
-    "$id": "src/utils/schema.json",
+    "$id": "schemas/response.json",
     "response": {
         "type": "object",
         "properties": {
@@ -31,6 +31,8 @@
                     404
                 ],
                 "minimum": 100
+            },
+            "headers":{
             },
             "body": {
                 "$ref": "#/response"

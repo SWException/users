@@ -1,32 +1,30 @@
 import { APIGatewayProxyResult } from "aws-lambda";
 
-export const API_RESPONSES = {
-    _200: (data: { [key: string]: any },
-        status = "success",
-        message?: string) => response(200, status, data, message),
-    _400: (data: { [key: string]: any },
-        status = "error",
-        message?: string) => response(400, status, data, message)
-}
+export default function response (
+    statusCode: number, 
+    message?: string,
+    data?: { [key: string]: any }): APIGatewayProxyResult {
+    
+    let status = "success";
+    if (!(200 <= statusCode && statusCode < 300))
+        status = "error";
 
-// c'è export perché attualmente ci sono dei test che testano direttamente questa funzione in apiResponses.test.ts. Per togliere l'export bisogna rivedere i test
-export function response (statusCode: number, 
-    status: string,
-    data: { [key: string]: any },
-    message?: string): APIGatewayProxyResult {
-    const BODY = {
-        status: status
+    const BODY= {
+        status
     };
-    if (data) {
-        BODY['data'] = data;
-    }
-    if (message) {
-        BODY['message'] = message;
-    }
+    if(message)
+        BODY["message"] = message;
+    if(data)
+        BODY["data"] = data;
+    
     return {
-        statusCode,
-        body: JSON.stringify(BODY, null, 2)
-    };
+        "statusCode": statusCode,
+        "headers": {
+            'Access-Control-Allow-Origin': '*', 
+            'Access-Control-Allow-Credentials': true,
+            'Access-Control-Allow-Headers': '*',
+            'Access-Control-Allow-Methods': 'GET, POST, OPTIONS, PUT, DELETE'
+        },
+        "body": JSON.stringify(BODY, null, 2)
+    }
 }
-
-export default API_RESPONSES;

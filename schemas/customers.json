@@ -1,24 +1,48 @@
 {
-    "$id": "schemas/checkJWT.json",
-    "user":{
+    "$id": "schemas/customers.json",
+    "customer":{
         "type": "object",
         "properties": {
-            "username": { "type": "string" },
-            "type": { 
-                "type": "string",
-                "enum": [
-                    "vendor",
-                    "customer"
-                ] 
-            }
+            "Username": { "type": "string" },
+            "Attributes": { 
+                "type": "array",
+                "items": { 
+                    "type": "object",
+                    "properties": {
+                        "Name": { "type": "string" },
+                        "Value": { "type": "string" }
+                    }
+                }
+            },
+            "UserCreateDate": { "type": "string" },
+            "UserLastModifiedDate": { "type": "string" },
+            "Enabled": { "type": "boolean" },
+            "UserStatus": { "type": "string" }
         }
     },
-    "responseUser": {
+    "customers": {
+        "type": "array",
+        "items": { 
+            "$ref": "#/customer"
+        }
+    },
+    "responseCustomer": {
         "allOf" : [
-            { "$ref": "response.json" },
+            { "$ref": "response.json#/response" },
             {
                 "properties": {
-                    "data": { "$ref": "#/user" }
+                    "data": { "$ref": "#/customer" }
+                }
+            }
+        ]
+
+    },
+    "responseCustomers": {
+        "allOf" : [
+            { "$ref": "response.json#/response" },
+            {
+                "properties": {
+                    "data": { "$ref": "#/customers" }
                 }
             }
         ]

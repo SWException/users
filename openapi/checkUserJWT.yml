@@ -1,7 +1,7 @@
 get:
   summary: check JWT token
-  description: return the validity status of the JWT and its type (customer/vendor)
-  operationId: checkJWT
+  description: return the validity status of the JWT
+  operationId: checkUserJWT
   tags:
     - users
 
@@ -25,12 +25,11 @@ get:
               status: "success",
               data:
               {
-                username: "1234",
-                type: "customer" # oppure vendor
+                username: "1234"
               }
             }
     400:
-      description: not valid token
+      description: not valid token, or not valid user
       content:
         application/json:
           schema:
@@ -38,5 +37,5 @@ get:
           example:
             {
               status: "error",
-              message: "invalid token"
+              message: "invalid token or user"
             }

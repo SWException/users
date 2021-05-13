@@ -1,21 +1,26 @@
 openapi: 3.0.3
 info:
   title: EmporioLambda BE
-  description: Queste sono le OpenAPI per il microservizio designato alla gestione degli utenti in Emporio Lambda
-  version: 0.1.0
+  description: OpenAPI for users management
+  version: 0.2.0
 
 servers:
-  # Added by API Auto Mocking Plugin
   - description: SwaggerHub API Auto Mocking
-    url: https://virtserver.swaggerhub.com/swexception4/OpenAPI/0.1.0/users
+    url: https://virtserver.swaggerhub.com/swexception4/OpenAPI/0.2.0/
   - description: serverless offline
-    url: http://localhost:4000/dev/users
+    url: http://localhost:4000/dev/
 
 paths:
-  /check/{token}: # check del token JWT
+  /users/check/{token}: # check del token JWT
     $ref: "checkJWT.yml"
-  /customers/: # ritorna lista dei clienti per il venditore (get),
+  /users/vendors/check/{token}: # check del token JWT che sia di un customer
+    $ref: "checkUserJWT.yml"
+  /users/customers/: # ritorna lista dei clienti per il venditore (get),
     $ref: "customers.yml"
+  /users/customers/{username}: # ritorna lista dei clienti per il venditore (get),
+    $ref: "customersByID.yml"
+  /users/customers/check/{token}: # check del token JWT che sia di un vendor
+    $ref: "checkUserJWT.yml"
   # /customers/{username}: # ritorna dettagli di un utente
   #   $ref: "customersByID.yml"
   # /login:

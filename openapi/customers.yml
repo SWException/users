@@ -1,9 +1,9 @@
 get:
-  summary: Ritorna clienti
-  description: Ritorna tutti i clienti della piattaforma
+  summary: Get customers
+  description: Get resume of all customers in the system
   operationId: getCustomers
   tags:
-    - customers
+    - users
   parameters:
     - in: header
       name: Authorization
@@ -13,11 +13,11 @@ get:
       required: true
   responses:
     200:
-      description: ritornata la lista
+      description: list returned
       content:
         application/json:
-          # schema:
-          #   $ref: "schema.json#/responseCustomers"
+          schema:
+            $ref: "../schemas/customers.json#/responseCustomers"
           example:
             {
               status: "success",
@@ -53,12 +53,24 @@ get:
                 }
               ]
             }
+    400:
+      description: "request error"
+      content:
+        application/json:
+          schema:
+            $ref: "../schemas/response.json#/response"
+          example:
+            {
+              status: "error",
+              message: "list not returned"
+            }
+
 # post:
-#   summary: Signup new customers
+#   summary: SignUp new customers
 #   description: Registra un nuovo cliente alla piattaforma, poi sarà da confermare la registrazione con la verifica dell'email
-#   operationId: signup
+#   operationId: signUp
 #   tags:
-#     - customers
+#     - users
 #   responses:
 #     200:
 #       description: ritornata se è andato a buon fine
